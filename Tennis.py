@@ -7,7 +7,21 @@ import sqlite3
 
 def csv_to_sql(csv_file, db_name, table_name):
     # Load the CSV file into a DataFrame
-    df = pd.read_csv(csv_file)
+    df1 = pd.read_csv(csv_file)
+    df1.drop(columns=["Player_2", "Court", "Round", "Series", "Rank_1", "Rank_2", "Pts_1", "Pts_2", "Odd_1", "Odd_2", "Score", "Winner", "Best of"], inplace=True)
+    df1.rename(columns={"Player_1": "Player"}, inplace=True)
+
+    df2 = pd.read_csv(csv_file)
+    df2.drop(columns=["Player_1", "Court", "Round", "Series", "Rank_1", "Rank_2", "Pts_1", "Pts_2", "Odd_1", "Odd_2", "Score", "Winner", "Best of"], inplace=True)
+    df2.rename(columns={"Player_2": "Player"}, inplace=True)
+
+    frames = [df1, df2]
+
+    df = pd.concat(frames)
+    print(df)
+    df = df.iloc[:,[1, 0, 3, 2]]
+    df = df.iloc[:,[0, 2, 1, 3]]
+    df.insert(4, "Injury", 1, True)
 
     # Connect to the SQLite database (it will be created if it doesn't exist)
     conn = sqlite3.connect(db_name)
