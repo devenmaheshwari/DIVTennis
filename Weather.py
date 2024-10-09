@@ -14,3 +14,6 @@ interval = dt.timedelta(hours=1)
 df = api.query_time_series(coordinates, startdate, enddate, interval, parameters, username, password, model=model)
 
 print(df)
+
+def getWeather(location, date):
+    return 1
