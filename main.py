@@ -7,7 +7,7 @@ def setup():
     c = db.cursor()
 
     c.execute("DROP TABLE IF EXISTS data")
-    ##command = "CREATE TABLE users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)"
+    command = "CREATE TABLE data (count PRIMARY KEY AUTOINCREMENT, date DATE, player VARCHAR(50), tournament VARCHAR(50)), surface VARCHAR(50), weather JSON, injured INT"
     c.execute(command)
 
     db.commit()
