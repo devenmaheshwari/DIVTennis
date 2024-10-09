@@ -16,4 +16,11 @@ df = api.query_time_series(coordinates, startdate, enddate, interval, parameters
 print(df)
 
 def getWeather(location, date):
+    coordinates = location
+    parameters = ['t_2m:C', 't_min_2m_24h:C', 't_max_2m_24h:C', 'wind_speed_10m:ms', 'wind_dir_10m:d'
+                  'precip_24h:mm', 'msl_pressure:hPa', 'weather_symbol_24h:idx', 'uv:idx']
+    return 1
+
+
+def convertlocation():
     return 1
