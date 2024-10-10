@@ -7,8 +7,11 @@ password = 'a74iVINjM9'
 coordinates = [(47.11, 11.47)]
 parameters = ['t_2m:C', 'precip_1h:mm', 'wind_speed_10m:ms']
 model = 'mix'
+date = '2015-01-20'
 startdate = dt.datetime.utcnow().replace(minute=0, second=0, microsecond=0)
 enddate = startdate + dt.timedelta(days=1)
+print(startdate)
+print(enddate)
 interval = dt.timedelta(hours=1)
 
 df = api.query_time_series(coordinates, startdate, enddate, interval, parameters, username, password, model=model)
@@ -16,12 +19,19 @@ df = api.query_time_series(coordinates, startdate, enddate, interval, parameters
 print(df)
 
 def getWeather(coordinates, date):
-    validatetime = date
+    year = 0 # split date
+    day = 0
+    month = 0
+    startdate = dt.date(year, day, month)
+    enddate = startdate + dt.timedelta(days=1)
+    interval = dt.timedelta(hours=1)
     parameters = ['t_2m:C', 't_min_2m_24h:C', 't_max_2m_24h:C', 'wind_speed_10m:ms', 'wind_dir_10m:d'
                   'precip_24h:mm', 'msl_pressure:hPa', 'weather_symbol_24h:idx', 'uv:idx']
-    location = coordinates
+    location = coordinates # change to postal codes
     format = 'json'
-    return 1
+
+    df = api.query_time_series(location, startdate, enddate, interval, parameters, username, password, model=format)
+    return df
 
 
 def convertlocation():
