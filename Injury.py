@@ -13,8 +13,8 @@ driver.get("https://tennisinsight.com/injuries/")
 time.sleep(2)
 
 length = driver.find_element(By.ID, "injuriesTable_length")
-# find sibling with class = "select"
 
+# find sibling with class = "select"
 select = length.find_element(By.CLASS_NAME, "select")
 
 select.click()
@@ -33,14 +33,11 @@ time.sleep(2)
 
 table = driver.find_element(By.ID, "injuriesTable_wrapper")
 
-# convert table to database 
+rows = table.find_elements(By.TAG_NAME, "tr")
+rows = rows[1:] # remove header row
 
-# Injury Date in webpage - Date Column in DB
-# Player in Webpage - Player Column in DB
-# Injury Description Column in Webage - Tournament Column in DB
-# Number 1 - Injury Column in DB
-
-print(table.text)
+# convert rows to rows.text and save in array
+rows = [row.text for row in rows]
 
 driver.quit()
 
