@@ -73,8 +73,10 @@ def getWeather(location, date):
     print(daily_dataframe)
 
     result = daily_dataframe.to_json()
-    parsed = loads(result)
-    return parsed
+    #parsed = loads(result)
+    #return daily_dataframe
+    print(dumps(result))
+    return dumps(result)
 
 def longlanCountry(city, country):
     geolocator = Nominatim()

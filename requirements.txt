@@ -6,3 +6,4 @@ Nominatim
 requests_cache
 retry_requests
 json
+selenium
