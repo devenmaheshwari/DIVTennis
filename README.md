@@ -2,6 +2,7 @@
 Project repo for Data Integration and Visualization at UC3M
 
 ## Report
+[Midterm Report](https://docs.google.com/document/d/1tBavo0zFw2jwOuK7_qUa65jzTmYqmAuW6AmwX18sMog/edit?tab=t.0)
 
 ## Helpful Links
 [Planning Sheet](https://docs.google.com/document/d/1digK0AGysLsVGO6WRiI6n7NdgIVw2nT2XJQ2vIpRIV4/edit#heading=h.qzxk72pzlb0c)
