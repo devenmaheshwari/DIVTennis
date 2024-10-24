@@ -1,6 +1,9 @@
 import sqlite3
 import pandas as pd
 import Tennis
+import injuries_to_pd_df
+import Weather
+import json
 
 DB_FILE = "Submission.db"
 
@@ -17,6 +20,7 @@ CREATE TABLE IF NOT EXISTS Data (
     Location VARCHAR(100),
     Surface VARCHAR(50),
     Injury INTEGER
+    Weather JSON
 );
 '''
 
@@ -54,9 +58,75 @@ def importTennis():
     return tennisdf
 
 def importInjury():
-    return 1
+    injurydf = injuries_to_pd_df.injury()
+    
+    #print(injurydf)
+    return injurydf
 
-def getWeather():
-    return 1
+def combine():
+    tennis = importTennis()
+    injury = importInjury()
 
-importTennis()
+    df = pd.concat([tennis, injury], axis=0)
+
+    df['Weather'] = None
+
+    print(df)
+    return df
+
+
+def main():
+    df = combine()
+    setup()
+
+    conn = sqlite3.connect(DB_FILE)
+
+    test = df[['Date', 'Location']].drop_duplicates()
+    test['Weather'] = None
+
+    test = test.head(50)
+
+    testdict = {}
+
+    for index, row in test.iterrows():
+        walf = Weather.getWeather(row['Location'], row['Date'])
+        test.at[index, 'Weather'] = walf
+        testdict[(row['Location'], row['Date'])] = walf
+
+
+    #print(testdict)
+
+    df['Weather'] = df.apply(lambda row: json.dumps(testdict.get((row['Location'], row['Date']))) if testdict.get((row['Location'], row['Date'])) else None, axis=1)
+    #print(df)
+
+    df.to_sql("Data", conn, if_exists='replace', index=False)
+    
+    conn.commit()
+    conn.close()
+
+
+
+
+    # for index, row in df.head(5).iterrows():
+    #     #print(index)
+    #     #print(row)
+    #     #print(row['Location'])
+    #     try:
+    #         print("Tried")
+    #         wata = Weather.getWeather(row['Location'], row['Date'])
+    #         print(wata)
+    #         df.at[index, 'Weather'] = wata
+    #         print
+    #     except:
+    #         print("Except")
+    #         df.at[index, 'Weather'] = {}
+    
+    # Apply the function directly to each row to populate the 'Weather' column
+    # df['Weather'] = df.apply(lambda row: Weather.getWeather(row['Location'], row['Date']), axis=1)
+    #print(df)
+
+
+
+# This line checks if the script is being run directly
+if __name__ == "__main__":
+    main()

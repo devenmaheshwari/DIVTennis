@@ -30,10 +30,10 @@ def getWeather(location, date):
 
     # Process first location. Add a for-loop for multiple locations or weather models
     response = responses[0]
-    print(f"Coordinates {response.Latitude()}°N {response.Longitude()}°E")
-    print(f"Elevation {response.Elevation()} m asl")
-    print(f"Timezone {response.Timezone()} {response.TimezoneAbbreviation()}")
-    print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
+    #print(f"Coordinates {response.Latitude()}°N {response.Longitude()}°E")
+    #print(f"Elevation {response.Elevation()} m asl")
+    #print(f"Timezone {response.Timezone()} {response.TimezoneAbbreviation()}")
+    #print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
 
     # Process daily data. The order of variables needs to be the same as requested.
     daily = response.Daily()
@@ -50,33 +50,36 @@ def getWeather(location, date):
     daily_wind_gusts_10m_max = daily.Variables(10).ValuesAsNumpy()
     daily_wind_direction_10m_dominant = daily.Variables(11).ValuesAsNumpy()
 
-    daily_data = {"date": pd.date_range(
-        start = pd.to_datetime(daily.Time(), unit = "s", utc = True),
-        end = pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
-        freq = pd.Timedelta(seconds = daily.Interval()),
-        inclusive = "left"
-    )}
-    daily_data["weather_code"] = daily_weather_code
-    daily_data["temperature_2m_max"] = daily_temperature_2m_max
-    daily_data["temperature_2m_min"] = daily_temperature_2m_min
-    daily_data["temperature_2m_mean"] = daily_temperature_2m_mean
-    daily_data["daylight_duration"] = daily_daylight_duration
-    daily_data["precipitation_sum"] = daily_precipitation_sum
-    daily_data["rain_sum"] = daily_rain_sum
-    daily_data["snowfall_sum"] = daily_snowfall_sum
-    daily_data["precipitation_hours"] = daily_precipitation_hours
-    daily_data["wind_speed_10m_max"] = daily_wind_speed_10m_max
-    daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_max
-    daily_data["wind_direction_10m_dominant"] = daily_wind_direction_10m_dominant
+    daily_data = {"date": date
+        #pd.date_range(
+        #start = pd.to_datetime(daily.Time(), unit = "s", utc = True),
+        #end = pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
+        #freq = pd.Timedelta(seconds = daily.Interval()),
+        #inclusive = "left"
+        #)
+    }
+    daily_data["weather_code"] = daily_weather_code.tolist()
+    daily_data["temperature_2m_max"] = daily_temperature_2m_max.tolist()
+    daily_data["temperature_2m_min"] = daily_temperature_2m_min.tolist()
+    daily_data["temperature_2m_mean"] = daily_temperature_2m_mean.tolist()
+    daily_data["daylight_duration"] = daily_daylight_duration.tolist()
+    daily_data["precipitation_sum"] = daily_precipitation_sum.tolist()
+    daily_data["rain_sum"] = daily_rain_sum.tolist()
+    daily_data["snowfall_sum"] = daily_snowfall_sum.tolist()
+    daily_data["precipitation_hours"] = daily_precipitation_hours.tolist()
+    daily_data["wind_speed_10m_max"] = daily_wind_speed_10m_max.tolist()
+    daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_max.tolist()
+    daily_data["wind_direction_10m_dominant"] = daily_wind_direction_10m_dominant.tolist()
 
-    daily_dataframe = pd.DataFrame(data = daily_data)
-    print(daily_dataframe)
+    
+    #print(daily_data)
 
-    result = daily_dataframe.to_json()
-    #parsed = loads(result)
-    #return daily_dataframe
-    print(dumps(result))
-    return dumps(result)
+    #daily_dataframe = pd.DataFrame(data = daily_data)
+    #print(daily_dataframe)
+
+    return daily_data
+
+
 
 def longlanCountry(city, country):
     geolocator = Nominatim()
