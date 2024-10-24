@@ -1,9 +1,8 @@
 pandas==2.2.3
 meteomatics
-sqlite3
 geopy
 Nominatim
 requests_cache
 retry_requests
-json
 selenium
+openmeteo_requests
