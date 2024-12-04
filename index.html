@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Graphs UI</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      width: 100%;
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .search-bar {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    footer {
+      width: 100%;
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+    }
+
+    .graph-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      width: 90%;
+      margin: 20px 0;
+    }
+
+    .graph {
+      flex: 1;
+      min-width: 300px;
+      max-width: 45%;
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <h2>DIV Tennis
+  </h2>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="search-bar">
+    <input type="text" placeholder="Search...">
+  </div>
+</nav>
+
+<h1>Two Graphs UI</h1>
+<div class="graph-container">
+  <canvas id="graph1" class="graph"></canvas>
+  <canvas id="graph2" class="graph"></canvas>
+</div>
+
+<footer>
+  <p>&copy; 2024 Graphs Dashboard. All rights reserved.</p>
+</footer>
+
+<script>
+  // Graph 1 Configuration
+  const ctx1 = document.getElementById('graph1').getContext('2d');
+  new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      datasets: [{
+        label: 'Sales Over Months',
+        data: [10, 20, 30, 40, 50, 60],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 2,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      }
+    }
+  });
+
+  // Graph 2 Configuration
+  const ctx2 = document.getElementById('graph2').getContext('2d');
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: 'Votes by Color',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
