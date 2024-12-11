@@ -7,7 +7,8 @@ import pandas as pd
 
 conn = sqlite3.connect("Submission.db")
 
-query = "SELECT Surface, Injury FROM Data"
+# Filter only those results from July (07) 2022 to February (02) 2023
+query = "SELECT Surface, Injury FROM Data WHERE Date BETWEEN '2022-07-01' AND '2023-02-28'"
 
 df = pd.read_sql_query(query, conn)
 
