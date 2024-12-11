@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Graphs UI</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .search-bar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        footer {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 90%;
+            margin: 20px 0;
+        }
+
+        .graph {
+            flex: 1;
+            min-width: 300px;
+            max-width: 45%;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2>DIV Tennis
+        </h2>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+    </nav>
+
+    <h1>Cloudy (Injured)</h1>
+    <div class="graph-container">
+        <canvas id="graph1" class="graph"></canvas>
+        <canvas id="graph2" class="graph"></canvas>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Graphs Dashboard. All rights reserved.</p>
+    </footer>
+
+    <script>
+
+    </script>
+</body>
+
+</html>
