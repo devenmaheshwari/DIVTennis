@@ -147,49 +147,86 @@
       })
       .catch(error => console.error('Error fetching data:', error));
 
-    // Graph 2 Configuration
-    const ctx2 = document.getElementById('graph2').getContext('2d');
-    new Chart(ctx2, {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'Votes by Color',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+    // Graph 2 Configuration (main faceted bar graph)
+    fetch('./weather_data.json')
+      .then(response => response.json())
+      .then(data => {
+        const ctx2 = document.getElementById('graph2').getContext('2d');
 
+        // Prepare data
+        const labels = ['Partly Cloudy [Code: 1]', 'Clear [Code: 2]', 'Cloudy [Code: 3]', 'Smoky [Code: 4]', 'Haze [Code: 5]'];
+        const injuredData = [
+          data["Partly cloudy"].Injured,
+          data.Clear.Injured,
+          data.Cloudy.Injured,
+          data.Smoky.Injured,
+          data.Haze.Injured
+        ];
+        const nonInjuredData = [
+          data["Partly cloudy"]['Non-Injured'],
+          data.Clear['Non-Injured'],
+          data.Cloudy['Non-Injured'],
+          data.Smoky['Non-Injured'],
+          data.Haze['Non-Injured']
+        ];
+
+        // Create the chart
+        new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Injured',
+                data: injuredData,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+              },
+              {
+                label: 'Non-Injured',
+                data: nonInjuredData,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  font: {
+                    size: 14
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                stacked: false,
+                ticks: {
+                  font: {
+                    size: 12
+                  }
+                },
+                grid: {
+                  drawOnChartArea: false // only want the grid lines for one axis to show up
+                },
+                barPercentage: 0.7, // bar width
+                categoryPercentage: 0.5 // space between bars
+              },
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
   </script>
 
 </html>
