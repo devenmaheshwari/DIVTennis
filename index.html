@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Two Graphs UI</title>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -96,49 +97,55 @@
 
   <script>
     // Graph 1 Configuration
-    <!-- const count_injured_hard = 10;
-    const count_non_injured_hard = 20;
-    const count_injured_clay = 5;
-    const count_non_injured_clay = 15;
-    const count_injured_grass = 3;
-    const count_non_injured_grass = 7; --> // tester values PLEASE DELETE if you see this
+    // Fetch data from JSON file
+    fetch('./injury_vs_court_type.json')
+      .then(response => response.json())
+      .then(data => {
+        const count_injured_hard = data.Hard.Injured;
+        const count_non_injured_hard = data.Hard['Non-Injured'];
+        const count_injured_clay = data.Clay.Injured;
+        const count_non_injured_clay = data.Clay['Non-Injured'];
+        const count_injured_grass = data.Grass.Injured;
+        const count_non_injured_grass = data.Grass['Non-Injured'];
 
-    const ctx1 = document.getElementById('graph1').getContext('2d');
-    new Chart(ctx1, {
-      type: 'line',
-      data: {
-        labels: ['Injured', 'Non-Injured'], // labels for x-axis
-        datasets: [{
-          label: 'Hard Court',
-          data: [count_injured_hard, count_non_injured_hard], // data for y-axis
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 2,
-          fill: false
-        },
-        {
-          label: 'Clay Court',
-          data: [count_injured_clay, count_non_injured_clay], // data for y-axis
-          borderColor: 'rgba(192, 192, 75, 1)',
-          borderWidth: 2,
-          fill: false
-        },
-        {
-          label: 'Grass Court',
-          data: [count_injured_grass, count_non_injured_grass], // data for y-axis
-          borderColor: 'rgba(192, 75, 192, 1)',
-          borderWidth: 2,
-          fill: false
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true
+        const ctx1 = document.getElementById('graph1').getContext('2d');
+        new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: ['Injured', 'Non-Injured'], // labels for x-axis
+            datasets: [{
+              label: 'Hard Court',
+              data: [count_injured_hard, count_non_injured_hard], // data for y-axis
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Clay Court',
+              data: [count_injured_clay, count_non_injured_clay], // data for y-axis
+              borderColor: 'rgba(192, 192, 75, 1)',
+              borderWidth: 2,
+              fill: false
+            },
+            {
+              label: 'Grass Court',
+              data: [count_injured_grass, count_non_injured_grass], // data for y-axis
+              borderColor: 'rgba(192, 75, 192, 1)',
+              borderWidth: 2,
+              fill: false
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true
+              }
+            }
           }
-        }
-      }
-    });
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
 
     // Graph 2 Configuration
     const ctx2 = document.getElementById('graph2').getContext('2d');
@@ -182,8 +189,7 @@
         }
       }
     });
-  </script>
 
-</body>
+  </script>
 
 </html>
