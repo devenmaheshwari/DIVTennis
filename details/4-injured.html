@@ -7,6 +7,8 @@
     <title>Two Graphs UI</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,7 +98,128 @@
     </footer>
 
     <script>
+        // Make additional graphs
+        fetch('./data/injured_smoky.json')
+            .then(response => response.json())
+            .then(data => {
 
+                const ctx1 = document.getElementById('graph1').getContext('2d');
+                // separate by court types
+
+                const hardCourtData = [];
+                const clayCourtData = [];
+                const grassCourtData = [];
+
+                // iterate over the data, saving the relevant values
+
+                Object.entries(data).forEach(([key, item]) => {
+                    if (item.Surface === 'Hard') {
+                        hardCourtData.push({
+                            x: item.Date, // x-axis
+                            y: item['Mean Temperature'], // y-axis
+                            minTemp: item['Min Temperature'], // additional data
+                            maxTemp: item['Max Temperature']
+                        });
+                    } else if (item.Surface === 'Clay') {
+                        clayCourtData.push({
+                            x: item.Date,
+                            y: item['Mean Temperature'],
+                            minTemp: item['Min Temperature'],
+                            maxTemp: item['Max Temperature']
+                        });
+                    } else if (item.Surface === 'Grass') {
+                        grassCourtData.push({
+                            x: item.Date,
+                            y: item['Mean Temperature'],
+                            minTemp: item['Min Temperature'],
+                            maxTemp: item['Max Temperature']
+                        });
+                    }
+                });
+
+
+                new Chart(ctx1, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: 'Hard Court',
+                                data: hardCourtData.map(item => ({ x: item.x, y: item.y, minTemp: item.minTemp, maxTemp: item.maxTemp })), // map the data in the array of objects
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                pointRadius: 4,
+                                pointHitRadius: 10,
+                                showLine: false,
+                                borderWidth: 2,
+                                fill: false
+                            },
+                            {
+                                label: 'Clay Court',
+                                data: clayCourtData.map(item => ({ x: item.x, y: item.y, minTemp: item.minTemp, maxTemp: item.maxTemp })),
+                                borderColor: 'rgba(192, 192, 75, 1)',
+                                pointRadius: 4,
+                                pointHitRadius: 10,
+                                showLine: false,
+                                borderWidth: 2,
+                                fill: false
+                            },
+                            {
+                                label: 'Grass Court',
+                                data: grassCourtData.map(item => ({ x: item.x, y: item.y, minTemp: item.minTemp, maxTemp: item.maxTemp })),
+                                borderColor: 'rgba(192, 75, 192, 1)',
+                                pointRadius: 4,
+                                pointHitRadius: 10,
+                                showLine: false,
+                                borderWidth: 2,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day',
+                                    displayFormats: {
+                                        day: 'yyyy-MM-dd' // Show the date in the format 'YYYY-MM-DD'
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Temperature'
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Mean Temperature by Court Type'
+                            },
+                            tooltip: {
+                                mode: 'nearest', // ensures that the tooltip shows for all datasets
+                                intersect: true, // prevents multiple tooltips from showing
+                                callbacks: {
+                                    // custom tooltip to show min/max temp
+                                    label: function (tooltipItem) {
+                                        const dataset = tooltipItem.datasetIndex; // get the index
+                                        const data = tooltipItem.raw; // get the original datapoint and then retrieve what we need
+                                        return `Temp: ${data.y}°C, Min: ${data.minTemp}°C, Max: ${data.maxTemp}°C`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.log('Error fetching data:', error));
     </script>
 </body>
 
