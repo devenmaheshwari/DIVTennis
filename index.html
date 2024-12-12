@@ -167,7 +167,7 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    h4 + p {
+    h4+p {
       font-size: 14px;
       color: #555;
       margin-top: 5px;
@@ -194,12 +194,19 @@
 
   <h4>Description</h4>
   <p>
-  This project aims to investigate the relationship between injury incidence, game performance, and weather among all professional outdoor sports. Our end product will be a service that predicts the chance that a specific athlete will get injured in an upcoming match, depending on the weather. Essentially, a user would be able to enter information relating to an upcoming match (player name, sport, date, location) and our product would predict the chance of that player getting injured. For example, these sports would include tennis, football, basketball, volleyball, rugby, and baseball among others. The tool will also be able to take into account metrics such as age and gender. 
-  <br>
-  To use this site, follow the graphs below. Feel free to click on any of the bars to find out more about specific weather patterns. Additionally, all graphs can be filtered based on court type. Finally, using the search bar at the top, find your favorite player or see if an athlete is in our dataset. Enjoy!   
-</p>
-  
-  
+    This project aims to investigate the relationship between injury incidence, game performance, and weather among all
+    professional outdoor sports. Our end product will be a service that predicts the chance that a specific athlete will
+    get injured in an upcoming match, depending on the weather. Essentially, a user would be able to enter information
+    relating to an upcoming match (player name, sport, date, location) and our product would predict the chance of that
+    player getting injured. For example, these sports would include tennis, football, basketball, volleyball, rugby, and
+    baseball among others. The tool will also be able to take into account metrics such as age and gender.
+    <br>
+    To use this site, follow the graphs below. Feel free to click on any of the bars to find out more about specific
+    weather patterns. Additionally, all graphs can be filtered based on court type. Finally, using the search bar at the
+    top, find your favorite player or see if an athlete is in our dataset. Enjoy!
+  </p>
+
+
 
   <h1>Main Summary</h1>
   <div id="search-results"></div>
@@ -2488,6 +2495,96 @@
       })
       .catch(error => console.error('Error fetching data:', error));
 
+    // Graph 3 Configuration (precipitation based)
+    fetch('./data/injuries_by_precipitation.json') // Replace with actual endpoint for precipitation-based data
+      .then(response => response.json())
+      .then(data => {
+        const ctx2 = document.getElementById('graph2').getContext('2d');
+
+        // Prepare data
+        const labels = [
+          'No Precipitation',
+          'Light Precipitation (0-2mm)',
+          'Moderate Precipitation (2-10mm)',
+          'Heavy Precipitation (>10mm)'
+        ];
+        const injuredData = [
+          data['No Precipitation'].Injured,
+          data['Light Precipitation'].Injured,
+          data['Moderate Precipitation'].Injured,
+          data['Heavy Precipitation'].Injured
+        ];
+        const nonInjuredData = [
+          data['No Precipitation']['Non-Injured'],
+          data['Light Precipitation']['Non-Injured'],
+          data['Moderate Precipitation']['Non-Injured'],
+          data['Heavy Precipitation']['Non-Injured']
+        ];
+
+        // Create the chart
+        const chart = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Injured',
+                data: injuredData,
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+              },
+              {
+                label: 'Non-Injured',
+                data: nonInjuredData,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  font: {
+                    size: 14
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                stacked: false,
+                ticks: {
+                  font: {
+                    size: 12
+                  }
+                },
+                grid: {
+                  drawOnChartArea: false
+                },
+                barPercentage: 0.7,
+                categoryPercentage: 0.5
+              },
+              y: {
+                beginAtZero: true
+              }
+            },
+            interaction: {
+              mode: 'nearest',
+              intersect: true
+            }
+          }
+        });
+
+        // Debug if chart was created successfully
+        console.log('Chart created successfully', chart);
+      })
+      .catch(error => console.error('Error fetching data:', error));
   </script>
 
 </html>
