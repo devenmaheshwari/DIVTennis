@@ -67,6 +67,21 @@
             max-width: 45%;
             margin: 10px;
         }
+
+        .back-button {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 
@@ -87,6 +102,8 @@
     </nav>
 
     <h1>Clear (Non-Injured)</h1>
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='../index.html'">Back to Home</button>
     <div class="graph-container">
         <canvas id="graph1" class="graph"></canvas>
         <canvas id="graph2" class="graph"></canvas>

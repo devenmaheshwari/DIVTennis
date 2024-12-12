@@ -55,10 +55,8 @@
     }
 
     .graph-container {
-      display: none;
-      /* Graphs are hidden by default */
-      flex-wrap: wrap;
-      justify-content: space-around;
+      display: flex;
+      justify-content: space-between;
       width: 90%;
       margin: 20px 0;
       padding: 10px;
@@ -67,15 +65,17 @@
 
     .graph {
       flex: 1;
-      min-width: 300px;
-      max-width: 45%;
+      min-width: 45%;
+      /* Ensure graphs do not get too narrow */
+      max-width: 48%;
+      /* Allow some space between them */
       margin: 10px;
       height: 500px;
     }
 
     #graph2 {
-      width: 100%;
-      height: 100%;
+      margin-bottom: 100px;
+      /* Add margin below graph 2 */
     }
   </style>
 </head>
@@ -209,7 +209,7 @@
         };
 
         // Create the chart
-        new Chart(ctx2, {
+        const chart = new Chart(ctx2, {
           type: 'bar',
           data: {
             labels: labels,
@@ -260,13 +260,36 @@
               y: {
                 beginAtZero: true
               }
+            },
+            interaction: {
+              mode: 'nearest', // changed for better interaction
+              intersect: true // ensures that the interaction occurs when intersecting a chart element
+            },
+            plugins: [separatorPlugin], // Register custom plugin
+            onClick: (e, activeElements) => {
+              if (activeElements.length > 0) {
+                const index = activeElements[0].index; // Weather condition index
+                const datasetIndex = activeElements[0].datasetIndex; // Injured (0) or Non-Injured (1)
+                const selectedLabel = labels[index]; // Get the label (weather condition)
+
+                // Build the URL based on the clicked bar's index and dataset
+                const pageIndex = index + 1; // 1-based index for the page number
+                const injuryStatus = datasetIndex === 0 ? 'injured' : 'non-injured';
+                const url = `./details/${pageIndex}-${injuryStatus}.html`;
+
+                // Navigate to the appropriate page
+                window.location.href = url;
+              } else {
+                console.log('No active elements found on click.');
+              }
             }
-          },
-          plugins: [separatorPlugin] // Register custom plugin
+          }
         });
+
+        // Debug if chart was created successfully
+        console.log('Chart created successfully', chart);
       })
       .catch(error => console.error('Error fetching data:', error));
-
 
   </script>
 
